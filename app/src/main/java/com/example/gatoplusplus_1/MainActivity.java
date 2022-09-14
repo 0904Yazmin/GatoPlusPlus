@@ -1,6 +1,12 @@
 package com.example.gatoplusplus_1;
 
+import static android.graphics.Color.WHITE;
+import static android.graphics.Color.blue;
+import static android.graphics.Color.rgb;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView jugador1;
     private TextView jugador2;
     private boolean Turno1 = true;
+    private boolean turno = true;
     private int cont;
     private int j1Puntos;
     private TextView empates;
@@ -37,7 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetGame(); }
+                resetGame();
+                resetCasillas();
+            }
         });
     }
     @Override
@@ -46,13 +55,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         if (Turno1) {
-            ((Button) v).setText("X");}
+            ((Button) v).setText("X");
+            ((Button) v).setBackgroundColor(Color.rgb(253, 216, 53));
+            }
         else {
-            ((Button) v).setText("O"); }
+            ((Button) v).setText("O"); ((Button) v).setBackgroundColor(Color.rgb(255, 152, 0));}
         cont++;
         if (checkForWin()) {
             if (Turno1) {
                 Ganadorj1();
+
             } else {
                 Ganadorj2();
             }
@@ -60,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Empates();
         } else {
             Turno1 = !Turno1;
+        }
+        if (resetCasillas()) {
+            ((Button) v).setBackgroundColor(WHITE);
+            turno = false;
         }
 
     }
@@ -73,27 +89,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (int i = 0; i < 6; i++) {
             if (field[i][0].equals(field[i][1]) && field[i][0].equals(field[i][2]) && field[i][0].equals(field[i][3]) && !field[i][0].equals("")) {
+                buttons[i][0].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][1].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][2].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][3].setBackgroundColor(Color.rgb(221, 44, 0));
                 return true;
             }
             if (field[i][1].equals(field[i][2]) && field[i][1].equals(field[i][3]) && field[i][1].equals(field[i][4]) && !field[i][1].equals("")) {
+                buttons[i][2].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][3].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][4].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][1].setBackgroundColor(Color.rgb(221, 44, 0));
                 return true;
             }
             if (field[i][2].equals(field[i][3]) && field[i][2].equals(field[i][4]) && field[i][2].equals(field[i][5]) && !field[i][2].equals("")) {
+                buttons[i][3].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][4].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][4].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[i][5].setBackgroundColor(Color.rgb(221, 44, 0));
                 return true;
             }
         }
-
         for (int i = 0; i < 6; i++) {
             if (field[0][i].equals(field[1][i]) && field[0][i].equals(field[2][i]) && field[0][i].equals(field[3][i]) && !field[0][i].equals("")) {
+                buttons[1][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[2][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[3][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[0][i].setBackgroundColor(Color.rgb(221, 44, 0));
                 return true;
             }
             if (field[1][i].equals(field[2][i]) && field[1][i].equals(field[3][i]) && field[1][i].equals(field[4][i]) && !field[1][i].equals("")) {
+                buttons[3][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[2][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[4][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[0][i].setBackgroundColor(Color.rgb(221, 44, 0));
                 return true;
             }
             if (field[2][i].equals(field[3][i]) && field[2][i].equals(field[4][i]) && field[2][i].equals(field[5][i]) && !field[2][i].equals("")) {
-                return true; }
+                buttons[3][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[4][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[5][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                buttons[2][i].setBackgroundColor(Color.rgb(221, 44, 0));
+                return true;
+            }
+
         }
         return false;
+
     }
 
     private void Ganadorj1() {
@@ -128,6 +170,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }}
         cont= 0;
         Turno1 = true;
+        resetCasillas();
+    }
+    private boolean resetCasillas(){
+        return false;
     }
 
     private void resetGame() {
@@ -136,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         puntosEmpates = 0;
         updatePointsText();
         resetBoard();
+        resetCasillas();
     }
 
     @Override
